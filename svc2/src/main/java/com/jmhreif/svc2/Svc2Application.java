@@ -5,6 +5,8 @@ import lombok.Data;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.retry.annotation.EnableRetry;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,6 +14,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 
 @SpringBootApplication
+@EnableRetry
 public class Svc2Application {
 
 	public static void main(String[] args) {
@@ -29,6 +32,7 @@ class Svc2Controller {
 	private final WebClient client;
 
 	@GetMapping
+	@Retryable
 	Flux<Book> getBooks() { return client.get().uri("/db").retrieve().bodyToFlux(Book.class); }
 }
 

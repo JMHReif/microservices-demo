@@ -8,12 +8,15 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.repository.reactive.ReactiveCrudRepository;
+import org.springframework.retry.annotation.EnableRetry;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
 
 @SpringBootApplication
+@EnableRetry
 public class Svc1Application {
 
 	public static void main(String[] args) {
@@ -29,6 +32,7 @@ class Svc1Controller {
 	private final BookRepository repo;
 
 	@GetMapping
+	@Retryable
 	Flux<Book> getBooks() { return repo.findAll(); }
 }
 

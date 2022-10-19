@@ -2,6 +2,7 @@ package com.jmhreif.svc2;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -16,13 +17,15 @@ import reactor.core.publisher.Flux;
 @SpringBootApplication
 @EnableRetry
 public class Svc2Application {
+	@Value("${backend.hostname:localhost}")
+	private String hostname;
 
 	public static void main(String[] args) {
 		SpringApplication.run(Svc2Application.class, args);
 	}
 
 	@Bean
-	WebClient client() { return WebClient.create("http://localhost:8081"); }
+	WebClient client() { return WebClient.create("http://" + hostname + ":8081"); }
 }
 
 @RestController
